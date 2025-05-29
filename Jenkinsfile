@@ -7,7 +7,7 @@ pipeline {
                 script {
                     bat """
                     call venv\\Scripts\\activate || exit 1
-                    python main.py || exit 1
+                    python main.pyt || exit 1
                     """
                 }
             }
