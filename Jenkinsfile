@@ -17,12 +17,12 @@ pipeline {
         stage('Initialize Virtual Environment') {
             steps {
                 script {
-                    sh """
-                    if [ ! -d "venv" ]; then
-                        echo "Virtual environment not found. Creating venv..."
-                        python3 -m venv venv
-                    fi
-                    source venv/bin/activate
+                    bat """
+                    if not exist venv (
+                        echo Virtual environment not found. Creating venv...
+                        python -m venv venv
+                    )
+                    call venv\\Scripts\\activate
                     """
                 }
             }
@@ -31,11 +31,11 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    sh """
-                    source venv/bin/activate
+                    bat """
+                    call venv\\Scripts\\activate
                     pip install --upgrade pip
                     pip install -r requirements.txt
-                    pip list | grep requests
+                    pip list | find "requests"
                     """
                 }
             }
@@ -44,10 +44,9 @@ pipeline {
         stage('Run Python Script') {
             steps {
                 script {
-                    sh """
-                    source venv/bin/activate
+                    bat """
+                    call venv\\Scripts\\activate
                     python main.py
-                    
                     """
                 }
             }
